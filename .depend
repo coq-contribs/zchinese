@@ -1,0 +1,25 @@
+main.cmo: main.ml chinese.cmo
+main.cmx: main.ml chinese.cmx
+chinese.cmo: chinese.ml
+chinese.cmx: chinese.ml
+Zstruct.vo: Zstruct.v Lci.vo misc.vo groups.vo rings.vo
+Zstruct.vi: Zstruct.v Lci.vo misc.vo groups.vo rings.vo
+Zgcd.vo: Zgcd.v misc.vo Zstruct.vo
+Zgcd.vi: Zgcd.v misc.vo Zstruct.vo
+rings.vo: rings.v Lci.vo misc.vo groups.vo
+rings.vi: rings.v Lci.vo misc.vo groups.vo
+misc.vo: misc.v Lci.vo
+misc.vi: misc.v Lci.vo
+Lci.vo: Lci.v
+Lci.vi: Lci.v
+groups.vo: groups.v Lci.vo misc.vo
+groups.vi: groups.v Lci.vo misc.vo
+extract.vo: extract.v Zgcd.vo
+extract.vi: extract.v Zgcd.vo
+Zstruct.html: Zstruct.v Lci.html misc.html groups.html rings.html
+Zgcd.html: Zgcd.v misc.html Zstruct.html
+rings.html: rings.v Lci.html misc.html groups.html
+misc.html: misc.v Lci.html
+Lci.html: Lci.v
+groups.html: groups.v Lci.html misc.html
+extract.html: extract.v Zgcd.html
