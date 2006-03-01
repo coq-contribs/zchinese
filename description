@@ -1,6 +1,6 @@
 Name: Zchinese-lemma
-Title: A proof of the Chinese Lemma
-Author:
-Institution:
-Description: This is a rewrite of the contribution chinese-lemma using Zarith	   
-Keywords:
+Title: A proof of the Chinese Remainder Lemma
+Author: Valérie Ménissier-Morain
+Institution: INRIA Rocquencourt
+Description: This is a rewriting of the contribution chinese-lemma using Zarith
+Keywords: Number Theory, Chinese Remainder Lemma, Primality
