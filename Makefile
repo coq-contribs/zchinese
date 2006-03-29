@@ -43,7 +43,7 @@ COQSRC=-I $(COQTOP)/kernel -I $(COQTOP)/lib \
   -I $(CAMLP4LIB)
 ZFLAGS=$(OCAMLLIBS) $(COQSRC)
 OPT=
-COQFLAGS=-q $(OPT) $(COQLIBS) $(COQ_XML)
+COQFLAGS=-q $(OPT) $(COQLIBS) $(OTHERFLAGS) $(COQ_XML)
 COQC=$(COQBIN)coqc
 GALLINA=gallina
 COQDOC=coqdoc
@@ -52,7 +52,6 @@ CAMLOPTC=ocamlopt -c
 CAMLLINK=ocamlc
 CAMLOPTLINK=ocamlopt
 COQDEP=$(COQBIN)coqdep -c
-COQVO2XML=coq_vo2xml
 GRAMMARS=grammar.cma
 CAMLP4EXTEND=pa_extend.cmo pa_ifdef.cmo q_MLast.cmo
 PP=-pp "camlp4o -I . -I $(COQTOP)/parsing $(CAMLP4EXTEND) $(GRAMMARS) -impl"
@@ -108,15 +107,7 @@ all.ps: $(VFILES)
 all-gal.ps: $(VFILES)
 	$(COQDOC) -ps -g -o $@ `$(COQDEP) -sort -suffix .v $(VFILES)`
 
-xml:: .xml_time_stamp
-.xml_time_stamp: misc.vo\
-  Lci.vo\
-  rings.vo\
-  groups.vo\
-  Zstruct.vo\
-  Zgcd.vo
-	$(COQVO2XML) $(COQFLAGS) $(?:%.o=%)
-	touch .xml_time_stamp
+
 
 ###################
 #                 #
@@ -141,7 +132,7 @@ test:
 #                  #
 ####################
 
-.PHONY: all opt byte archclean clean install depend xml
+.PHONY: all opt byte archclean clean install depend html
 
 .SUFFIXES: .v .vo .vi .g .html .tex .g.tex .g.html
 
@@ -174,27 +165,28 @@ opt:
 
 include .depend
 
-depend:
-	rm .depend
-	$(COQDEP) -i $(COQLIBS) *.v *.ml *.mli >.depend
-	$(COQDEP) $(COQLIBS) -suffix .html *.v >>.depend
-
-xml::
+.depend depend:
+	rm -f .depend
+	$(COQDEP) -i $(COQLIBS) $(VFILES) *.ml *.mli >.depend
+	$(COQDEP) $(COQLIBS) -suffix .html $(VFILES) >>.depend
 
 install:
 	mkdir -p `$(COQC) -where`/user-contrib
-	cp -f *.vo `$(COQC) -where`/user-contrib
+	cp -f $(VOFILES) `$(COQC) -where`/user-contrib
 
 Makefile: Make
 	mv -f Makefile Makefile.bak
 	$(COQBIN)coq_makefile -f Make -o Makefile
 
+
 clean:
-	rm -f *.cmo *.cmi *.cmx *.o *.vo *.vi *.g *~
+	rm -f *.cmo *.cmi *.cmx *.o $(VOFILES) $(VIFILES) $(GFILES) *~
 	rm -f all.ps all-gal.ps $(HTMLFILES) $(GHTMLFILES)
 
 archclean:
 	rm -f *.cmx *.o
+
+html:
 
 # WARNING
 #
