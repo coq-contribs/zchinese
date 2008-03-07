@@ -1,10 +1,11 @@
+-R . Zchinese-lemma
 misc.v
 Lci.v
 rings.v
 groups.v
 Zstruct.v
 Zgcd.v
--custom "$(COQBIN)coqtop $(COQFLAGS) -silent -batch -load-vernac-source extract.v" Zgcd.vo chinese.ml
+-custom "$(COQBIN)coqtop $(COQLIBS) $(COQFLAGS) -silent -batch -load-vernac-source extract.v" Zgcd.vo chinese.ml
 -custom "ocamlopt -o chinese chinese.mli chinese.ml main.ml" chinese.ml chinese
 -custom   
        "@echo '***** test: computing the chinese remaindering of an example  *****'
