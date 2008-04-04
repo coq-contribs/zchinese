@@ -1,4 +1,4 @@
--R . Zchinese-lemma
+-R . ZChinese
 misc.v
 Lci.v
 rings.v

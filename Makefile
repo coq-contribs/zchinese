@@ -24,8 +24,8 @@
 #########################
 
 OCAMLLIBS:=
-COQLIBS:= -R . Zchinese-lemma
-COQDOCLIBS:=-R . Zchinese-lemma
+COQLIBS:= -R . ZChinese
+COQDOCLIBS:=-R . ZChinese
 
 ##########################
 #                        #
@@ -80,16 +80,9 @@ GFILES:=$(VFILES:.v=.g)
 HTMLFILES:=$(VFILES:.v=.html)
 GHTMLFILES:=$(VFILES:.v=.g.html)
 
-all: misc.vo\
-  Lci.vo\
-  rings.vo\
-  groups.vo\
-  Zstruct.vo\
-  Zgcd.vo\
-  chinese.ml\
+all: $(VOFILES) chinese.ml\
   chinese\
   test
-
 spec: $(VIFILES)
 
 gallina: $(GFILES)
@@ -135,8 +128,6 @@ test:
 
 .PHONY: all opt byte archclean clean install depend html
 
-.SUFFIXES: .v .vo .vi .g .html .tex .g.tex .g.html
-
 %.vo %.glob: %.v
 	$(COQC) -dump-glob $*.glob $(COQDEBUG) $(COQFLAGS) $*
 
@@ -158,13 +149,8 @@ test:
 %.g.html: %.v %.glob
 	$(COQDOC) -glob-from $*.glob -html -g $< -o $@
 
-%.v.d.raw: %.v
-	$(COQDEP) -slash $(COQLIBS) "$<" > "$@"\
-	  || ( RV=$$?; rm -f "$@"; exit $${RV} )
-
-%.v.d: %.v.d.raw
-	$(HIDE)sed 's/\(.*\)\.vo[[:space:]]*:/\1.vo \1.glob:/' < "$<" > "$@" \
-	  || ( RV=$$?; rm -f "$@"; exit $${RV} )
+%.v.d: %.v
+	$(COQDEP) -glob -slash $(COQLIBS) "$<" > "$@" || ( RV=$$?; rm -f "$@"; exit $${RV} )
 
 byte:
 	$(MAKE) all "OPT:=-byte"
