@@ -6,7 +6,7 @@ groups.v
 Zstruct.v
 Zgcd.v
 -custom "$(COQBIN)coqtop $(COQLIBS) $(COQFLAGS) -silent -batch -load-vernac-source extract.v" Zgcd.vo chinese.ml
--custom "ocamlopt -o chinese chinese.mli chinese.ml main.ml" chinese.ml chinese
+-custom "$(CAMLBIN)ocamlopt -o chinese chinese.mli chinese.ml main.ml" chinese.ml chinese
 -custom   
        "@echo '***** test: computing the chinese remaindering of an example  *****'
 	./chinese 9 16 3 7
