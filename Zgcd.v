@@ -155,11 +155,11 @@ Proof.
   split with 1%Z (Zsgn b). rewrite e. simpl in |- *. rewrite (Zsgn_Zabs b).
   apply (gcdZ_is_gcdZ 0 b (Zabs b)); apply gcd_OZ. unfold Q in |- *; intro b.
   elim (Zdiv_eucl_extended e b). intro p; elim p; clear p.
-  intros div rem; intros. cut (Zabs rem < Zabs q)%Z; intros.
-  elim (f rem H q). intros. split with (v + - (div * u))%Z u.
+  intros div r; intros. cut (Zabs r < Zabs q)%Z; intros.
+  elim (f r H q). intros. split with (v + - (div * u))%Z u.
   elim p. intros. elim H1. intros. intros. pattern b at 1 in |- *.
   rewrite H0; auto with zarith.
-  rewrite <- (gcd_modZ b q div rem); auto with zarith.
+  rewrite <- (gcd_modZ b q div r); auto with zarith.
   rewrite <- e0.
   ring.
   elim p; intros; elim H0; intros. 
