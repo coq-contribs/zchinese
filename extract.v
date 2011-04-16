@@ -43,5 +43,5 @@ Extract Constant p2i =>
   .
    ].
 
-
+Set Extraction AccessOpaque.
 Extraction "chinese.ml" chinese_remaindering_theorem int i2p p2i z2i i2z.
