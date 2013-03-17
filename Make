@@ -11,4 +11,4 @@ Zgcd.v
        "@echo '***** test: computing the chinese remaindering of an example  *****'
 	./chinese 9 16 3 7
 	@echo '*********************** End of test *******************************'"
-  "" test 
+  chinese test
