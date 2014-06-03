@@ -6,6 +6,8 @@ Require Import ZArithRing.
 Require Import Zcomplements.
 Require Import Zdiv.
 
+Unset Standard Proposition Elimination Names.
+
 Lemma gcd_unicity_apart_sign :
  forall a b c d : Z,
  is_gcd Z IdZ Zmult 0%Z a b c ->
