@@ -26,7 +26,6 @@ Extract Constant p2i =>
 ".
 
 
-[
   Extract Constant i2z =>
    " function 
     0 -> Z0
@@ -41,7 +40,6 @@ Extract Constant p2i =>
   | Zneg p -> -(p2i p)
 "
   .
-   ].
 
 Set Extraction AccessOpaque.
 Extraction "chinese.ml" chinese_remaindering_theorem int i2p p2i z2i i2z.
