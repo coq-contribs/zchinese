@@ -1,6 +1,6 @@
 Name: ZChinese
 Title: A proof of the Chinese Remainder Lemma
-Author: Valérie Ménissier-Morain
+Author: ValÃ©rie MÃ©nissier-Morain
 Institution: INRIA Rocquencourt
 Description: This is a rewriting of the contribution chinese-lemma using Zarith
 Keywords: number theory, chinese remainder, primality, prime numbers
