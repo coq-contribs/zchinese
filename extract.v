@@ -1,3 +1,4 @@
+Require Extraction.
 Require Import Zgcd.
 
 Axiom int : Set.
