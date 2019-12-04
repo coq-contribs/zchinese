@@ -15,7 +15,7 @@ Lemma gcd_unicity_apart_sign :
 Proof.
 intros.
 elim
- (gcd_unicity_apart_unities Z IdZ Zplus Zmult 0%Z 1%Z Zopp
+ (gcd_unicity_apart_unities Z IdZ Zplus Zmult 0%Z 1%Z Z.opp
     Z_unitary_commutative_ring integrityZ a b c d H H0).
 intros.
 elim (inversibleZ x); intros.
@@ -24,12 +24,12 @@ right. elim H1; intros; elim H4; intros. rewrite H6. rewrite H2; auto with zarit
 elim H1; intros; exact H2.
 Qed.
 
-Lemma gcd_OZ_absZ : forall b : Z, is_gcd Z IdZ Zmult 0%Z 0%Z b (Zabs b).
+Lemma gcd_OZ_absZ : forall b : Z, is_gcd Z IdZ Zmult 0%Z 0%Z b (Z.abs b).
 Proof.
 intros. 
 elim (Z_le_gt_dec 0 b); intros.
 (* |b|=b *)
-rewrite Zabs_eq; auto with zarith.
+rewrite Z.abs_eq; auto with zarith.
 unfold is_gcd in |- *; split.
 unfold divide in |- *; unfold IdZ in |- *; split. exact I. split. exact I. left; reflexivity.
 split; unfold divide in |- *; unfold IdZ in |- *. split. exact I. split. exact I.
@@ -54,11 +54,11 @@ rewrite <- Zopp_mult_distr_r; auto.
 Qed.
 
 Inductive is_gcdZ : Z -> Z -> Z -> Prop :=
-  | gcd_OZ : forall b : Z, is_gcdZ 0%Z b (Zabs b)
+  | gcd_OZ : forall b : Z, is_gcdZ 0%Z b (Z.abs b)
   | gcd_mod :
       forall b a d q r : Z,
       b <> 0%Z ->
-      (0 <= r < Zabs b)%Z ->
+      (0 <= r < Z.abs b)%Z ->
       a = (b * q + r)%Z -> is_gcdZ r b d -> is_gcdZ b a d.
 
 Definition have_gcdZ (a b : Z) := {d : Z | is_gcdZ a b d}.
@@ -67,16 +67,16 @@ Definition gcdZ_i (a b : Z) := exist (is_gcdZ a b).
 
 Definition P (a : Z) := forall b : Z, have_gcdZ a b.
 
-Lemma acc_P : forall n : Z, (forall m : Z, (Zabs m < Zabs n)%Z -> P m) -> P n.
+Lemma acc_P : forall n : Z, (forall m : Z, (Z.abs m < Z.abs n)%Z -> P m) -> P n.
 Proof.
   intros. case (Z_zerop n); intro. unfold P in |- *. intro.
-  split with (Zabs b). rewrite e. apply (gcd_OZ b).
+  split with (Z.abs b). rewrite e. apply (gcd_OZ b).
   unfold P in |- *; intro. elim (Zdiv_eucl_extended n0 b). 
   intro p; elim p; intros q r H0; elim H0; clear p H0; intros.
-  cut (Zabs r < Zabs n)%Z; intros.
+  cut (Z.abs r < Z.abs n)%Z; intros.
   elim (H r H2 n). intros. split with x.
   apply gcd_mod with q r; trivial. 
-  rewrite Zabs_eq; auto with zarith.
+  rewrite Z.abs_eq; auto with zarith.
 Qed.
 
 Lemma gcdZ_exists : forall a b : Z, have_gcdZ a b.
@@ -91,14 +91,14 @@ intros. elim H. intros. apply (gcd_OZ_absZ b0).
 clear H a b d; intros. unfold is_gcd in |- *.
 elim H3; clear H3; intros. elim H4; clear H4; intros. split. exact H4.
 split. rewrite H1.
-apply (div_add Z IdZ Zplus Zmult 0%Z Zopp Z_ring (b * q)%Z r d).
-apply (div_mult Z IdZ Zplus Zmult 0%Z Zopp Z_ring b q d).
+apply (div_add Z IdZ Zplus Zmult 0%Z Z.opp Z_ring (b * q)%Z r d).
+apply (div_mult Z IdZ Zplus Zmult 0%Z Z.opp Z_ring b q d).
 exact H4. exact I. exact H3.
 intros. apply (H5 q0).
 cut (r = (a - b * q)%Z); intros. rewrite H8.
-apply (div_add Z IdZ Zplus Zmult 0%Z Zopp Z_ring a (- (b * q))%Z q0 H7).
-apply (div_opp Z IdZ Zplus Zmult 0%Z Zopp Z_ring (b * q)%Z q0).
-exact (div_mult Z IdZ Zplus Zmult 0%Z Zopp Z_ring b q q0 H6 I).
+apply (div_add Z IdZ Zplus Zmult 0%Z Z.opp Z_ring a (- (b * q))%Z q0 H7).
+apply (div_opp Z IdZ Zplus Zmult 0%Z Z.opp Z_ring (b * q)%Z q0).
+exact (div_mult Z IdZ Zplus Zmult 0%Z Z.opp Z_ring b q q0 H6 I).
 rewrite H1; auto with zarith.
 exact H6.
 Qed.
@@ -139,7 +139,7 @@ Qed.
 
 Lemma gcd_modZ :
  forall a b q r : Z,
- b <> 0%Z -> (0 <= r < Zabs b)%Z -> a = (b * q + r)%Z -> gcdZ r b = gcdZ b a. 
+ b <> 0%Z -> (0 <= r < Z.abs b)%Z -> a = (b * q + r)%Z -> gcdZ r b = gcdZ b a. 
 Proof.
 intros. apply (gcdZ_is_gcdZ b a (gcdZ r b)).
 apply (gcd_mod b a (gcdZ r b) q r H H0 H1 (gcdZ_correct r b)).
@@ -151,13 +151,13 @@ Inductive verify_BezoutZ (a b : Z) : Set :=
 
 Definition Q (a : Z) := forall b : Z, verify_BezoutZ a b.
 
-Lemma acc_Q : forall n : Z, (forall m : Z, (Zabs m < Zabs n)%Z -> Q m) -> Q n.
+Lemma acc_Q : forall n : Z, (forall m : Z, (Z.abs m < Z.abs n)%Z -> Q m) -> Q n.
 Proof.
   intros q f. elim (Z_zerop q); intro e. unfold Q in |- *; intro b.
-  split with 1%Z (Zsgn b). rewrite e. simpl in |- *. rewrite (Zsgn_Zabs b).
-  apply (gcdZ_is_gcdZ 0 b (Zabs b)); apply gcd_OZ. unfold Q in |- *; intro b.
+  split with 1%Z (Z.sgn b). rewrite e. simpl in |- *. rewrite (Zsgn_Zabs b).
+  apply (gcdZ_is_gcdZ 0 b (Z.abs b)); apply gcd_OZ. unfold Q in |- *; intro b.
   elim (Zdiv_eucl_extended e b). intro p; elim p; clear p.
-  intros div r; intros. cut (Zabs r < Zabs q)%Z; intros.
+  intros div r; intros. cut (Z.abs r < Z.abs q)%Z; intros.
   elim (f r H q). intros. split with (v + - (div * u))%Z u.
   elim p. intros. elim H1. intros. intros. pattern b at 1 in |- *.
   rewrite H0; auto with zarith.
@@ -165,7 +165,7 @@ Proof.
   rewrite <- e0.
   ring.
   elim p; intros; elim H0; intros. 
-  rewrite Zabs_eq; auto with zarith.
+  rewrite Z.abs_eq; auto with zarith.
 Qed.
 
 Lemma Bezout_exists : forall a b : Z, verify_BezoutZ a b.

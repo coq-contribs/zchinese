@@ -10,7 +10,7 @@ Require Import Omega.
 
 Definition IdZ (x : Z) := True.
 
-Theorem Z_group : is_group Z IdZ Zplus 0%Z Zopp.
+Theorem Z_group : is_group Z IdZ Zplus 0%Z Z.opp.
 Proof.
 split.
 red in |- *; trivial.
@@ -24,7 +24,7 @@ Qed.
 
 (* Multiplication on Z, (Z, +, *, 0, 1) is a unitary commutative ring *)
 
-Theorem Z_ring : is_ring Z IdZ Zplus Zmult 0%Z Zopp.
+Theorem Z_ring : is_ring Z IdZ Zplus Zmult 0%Z Z.opp.
 Proof.
 unfold is_ring in |- *.
 split.
@@ -35,7 +35,7 @@ split; red in |- *; auto with zarith.
 Qed.
 
 Theorem Z_unitary_commutative_ring :
- is_unitary_commutative_ring Z IdZ Zplus Zmult 0%Z 1%Z Zopp.
+ is_unitary_commutative_ring Z IdZ Zplus Zmult 0%Z 1%Z Z.opp.
 Proof.
 unfold is_unitary_commutative_ring in |- *.
 split. exact Z_ring.
@@ -77,7 +77,7 @@ left.
 elim (Z_le_lt_eq_dec 1 x); auto with zarith; intros.
 cut (1 > x0)%Z; intros.
 absurd (0 < x0)%Z; intros; auto with zarith.
-apply Zgt_lt.
+apply Z.gt_lt.
 apply Zmult_gt_0_reg_l with x; auto with zarith.
 apply Zmult_gt_reg_r with x; auto with zarith.
 rewrite Zmult_1_l; rewrite Zmult_comm; auto with zarith.
@@ -88,7 +88,7 @@ right.
 elim (Z_le_lt_eq_dec 1 (- x)); auto with zarith; intros.
 cut (1 > - x0)%Z; intros.
 absurd (0 < - x0)%Z; intros; auto with zarith.
-apply Zgt_lt.
+apply Z.gt_lt.
 apply Zmult_gt_0_reg_l with (- x)%Z; auto with zarith.
 rewrite Zopp_mult_distr_l_reverse; rewrite <- Zopp_mult_distr_r;
  auto with zarith.
