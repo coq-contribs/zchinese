@@ -4,11 +4,14 @@ Require Export Arith.
 Require Export groups.
 Require Export rings.
 Require Export ZArith.
+Require Import Coq.ZArith.BinInt.
 Require Import Omega.
 
 (* Addition on Z, (Z, +) is a group *)
 
 Definition IdZ (x : Z) := True.
+
+Definition Zopp (a : Z) : Z := 0 - a.
 
 Theorem Z_group : is_group Z IdZ Zplus 0%Z Zopp.
 Proof.
@@ -77,7 +80,7 @@ left.
 elim (Z_le_lt_eq_dec 1 x); auto with zarith; intros.
 cut (1 > x0)%Z; intros.
 absurd (0 < x0)%Z; intros; auto with zarith.
-apply Zgt_lt.
+apply Zgt_iff_lt.
 apply Zmult_gt_0_reg_l with x; auto with zarith.
 apply Zmult_gt_reg_r with x; auto with zarith.
 rewrite Zmult_1_l; rewrite Zmult_comm; auto with zarith.
@@ -88,7 +91,7 @@ right.
 elim (Z_le_lt_eq_dec 1 (- x)); auto with zarith; intros.
 cut (1 > - x0)%Z; intros.
 absurd (0 < - x0)%Z; intros; auto with zarith.
-apply Zgt_lt.
+apply Zgt_iff_lt.
 apply Zmult_gt_0_reg_l with (- x)%Z; auto with zarith.
 rewrite Zopp_mult_distr_l_reverse; rewrite <- Zopp_mult_distr_r;
  auto with zarith.
